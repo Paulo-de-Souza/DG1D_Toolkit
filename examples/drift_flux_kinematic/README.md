@@ -20,9 +20,6 @@ right boundary is transmissive because the chosen characteristics leave the doma
 
 ## Verification
 
-For the stated data the solution is a single entropy shock. The script uses
-the Rankine--Hugoniot speed to construct an exact solution, reports L1/L2
-error and a flux-based global mass-balance residual. It uses 160 elements,
-degree 2, Rusanov flux, SSPRK(5,4), and a void-fraction limiter enforcing
-\(0\leq\alpha_g\leq1\). Output is saved in `results/generated/`; the prior
-reference output is in `results/reference_data/`.
+For the stated data the solution is a single entropy shock. The script uses the Rankine--Hugoniot speed to construct an exact solution, reports L1/L2
+error and a flux-based global mass-balance residual. It uses 160 elements, degree 2, Rusanov flux, SSPRK(5,4), and a void-fraction limiter enforcing
+$0 \leq \alpha_g \leq 1$. Output is saved in `results/generated/`; the prior reference output is in `results/reference_data/`.
