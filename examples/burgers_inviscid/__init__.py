@@ -1,0 +1,1 @@
+"""Inviscid Burgers example."""
