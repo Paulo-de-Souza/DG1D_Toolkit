@@ -10,16 +10,16 @@ python -m examples.burgers_inviscid.run
 
 The example solves the nonlinear conservation law
 
-\[
+$$
 \partial_t u + \partial_x\left(\frac{u^2}{2}\right)=0,
 \qquad x\in[0,1],\quad t\in[0,0.5].
-\]
+$$
 
 The initial state is
 
-\[
+$$
 u(x,0)=0.5+\sin(2\pi x).
-\]
+$$
 
 The current driver applies its left ghost state through
 `contorno_dirichlet`; its right ghost is set to the same prescribed state.
