@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use DG1D Toolkit, please cite the software and the relevant methodological references."
+title: "DG1D Toolkit: One-Dimensional Discontinuous Galerkin Research and Teaching Toolkit"
+version: 0.1.0
+date-released: 2026-10-08
+authors:
+  - family-names: Souza
+    given-names: Paulo
+license: MIT
+repository-code: "https://github.com/Paulo-de-Souza/DG1D_Toolkit"
