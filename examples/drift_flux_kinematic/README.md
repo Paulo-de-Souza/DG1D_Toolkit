@@ -10,17 +10,13 @@ python -m examples.drift_flux_kinematic.run
 
 This first two-phase step advances only the gas void fraction:
 
-\[
-\partial_t\alpha_g+
-\partial_x\left[\alpha_g\left(C_0j+V_{gj}(1-\alpha_g)\right)\right]=0.
-\]
+$$
+\partial_t \alpha_g + \partial_x \left[\alpha_g \left(C_0j + V_{gj}(1-\alpha_g) \right) \right]=0.
+$$
 
-It uses \(L=1\,\mathrm{m}\), mixture superficial velocity
-\(j=0.8\,\mathrm{m/s}\), \(C_0=1.2\) and \(V_{gj}=0.35\,\mathrm{m/s}\).
-The Riemann data are \(\alpha_g=0.08\) left of \(x=0.4\) and
-\(\alpha_g=0.62\) to the right. The left boundary is prescribed and the
-right boundary is transmissive because the chosen characteristics leave the
-domain there.
+It uses $L=1\,\mathrm{m}$, mixture superficial velocity $j=0.8\,\mathrm{m/s}$, $C_0=1.2$ and $V_{gj}=0.35\,\mathrm{m/s}$.
+The Riemann data are $\alpha_g=0.08$ left of $x=0.4$ and $\alpha_g=0.62$ to the right. The left boundary is prescribed and the
+right boundary is transmissive because the chosen characteristics leave the domain there.
 
 ## Verification
 
