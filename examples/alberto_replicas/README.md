@@ -31,6 +31,7 @@ examples/alberto_replicas/
 │   └── run.py
 └── traffic_flow/
     └── run.py
+```
 
 ## Mapa dos casos
 
@@ -50,12 +51,33 @@ Na raiz da toolkit:
 
 ```bash
 PYTHONPATH=. python examples/alberto_replicas/allen_cahn/run.py --quick
+```
+
+```bash
 PYTHONPATH=. python examples/alberto_replicas/allen_cahn/run.py --quick --diffusion br2
+```
+
+```bash
 PYTHONPATH=. python examples/alberto_replicas/cahn_hilliard/run.py --quick
+```
+
+```bash
 PYTHONPATH=. python examples/alberto_replicas/shallow_water/run.py --quick
+```
+
+```bash
 PYTHONPATH=. python examples/alberto_replicas/shock_density/run.py --quick
+```
+
+```bash
 PYTHONPATH=. python examples/alberto_replicas/shu_osher/run.py --quick
+```
+
+```bash
 PYTHONPATH=. python examples/alberto_replicas/linear_advection/run.py --quick
+```
+
+```bash
 PYTHONPATH=. python examples/alberto_replicas/traffic_flow/run.py --quick
 ```
 
@@ -124,21 +146,35 @@ usam os valores efetivos dos scripts do Alberto, e não o modo reduzido
 
 ```bash
 python examples/alberto_replicas/allen_cahn/run.py --print-every 1000 --history-every 500
+```
 
+```bash
 python examples/alberto_replicas/allen_cahn/run.py --diffusion br2 --print-every 1000 --history-every 500
+```
 
+```bash
 python examples/alberto_replicas/cahn_hilliard/run.py --print-every 5000 --history-every 1000
+```
 
+```bash
 python examples/alberto_replicas/linear_advection/run.py --print-every 50 --history-every 25
+```
 
+```bash
 python examples/alberto_replicas/shallow_water/run.py --print-every 500 --history-every 100
+```
 
+```bash
 python examples/alberto_replicas/shock_density/run.py --print-every 2000 --history-every 500
+```
 
+```bash
 python examples/alberto_replicas/shu_osher/run.py --print-every 5000 --history-every 1000
+```
 
+```bash
 python examples/alberto_replicas/traffic_flow/run.py --print-every 500 --history-every 100
-
+```
 
 ## Observações de fidelidade
 
