@@ -33,6 +33,30 @@ examples/alberto_replicas/
     └── run.py
 ```
 
+## O papel de `common.py`
+
+A pasta `examples/alberto_replicas/` reúne várias reproduções dos problemas resolvidos originalmente nos códigos do professor Alberto. Como esses exemplos compartilham a mesma infraestrutura numérica, as rotinas comuns foram centralizadas no arquivo `common.py`.
+
+Esse arquivo não representa um problema físico específico. Ele fornece ferramentas reutilizáveis para:
+
+- projetar condições iniciais no espaço DG;
+- integrar as equações no tempo;
+- montar termos escalares e sistemas de equações;
+- aplicar fluxos e estratégias de difusão;
+- registrar diagnósticos e histórico da solução;
+- salvar resultados numéricos;
+- gerar gráficos e resumos da execução.
+
+Cada `run.py` continua responsável pelo problema físico específico: equações, parâmetros, condições iniciais, condições de contorno e escolha dos métodos numéricos.
+
+A estrutura pode ser resumida como:
+
+```text
+run.py
+  └── common.py
+        └── dg1d_toolkit/
+```
+
 ## Mapa dos casos
 
 | Exemplo | Fonte principal no ZIP do Alberto | Estratégia usada nesta réplica |
