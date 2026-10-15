@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+
+# Ambientes virtuais
+.venv/
+venv/
+env/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Resultados gerados
+examples/**/results/generated/
+examples/alberto_replicas/**/results/*.npz
+examples/alberto_replicas/**/results/*.png
+
+# Arquivos temporários
+*.log
+.DS_Store
+Thumbs.db
