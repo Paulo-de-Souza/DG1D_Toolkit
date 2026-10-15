@@ -17,6 +17,7 @@ existente. A solução exata é usada apenas para imprimir o erro máximo.
 
 ```bash
 python examples/diffusive_flux_comparison/run.py
+
 python examples/diffusive_flux_comparison/run.py --K 48 --N 4 --nu 0.001 --t-end 0.02
 ```
 
