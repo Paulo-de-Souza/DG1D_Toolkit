@@ -17,7 +17,12 @@ import numpy as np
 from dg1d_toolkit.dg1d_capture_shock import artificial_viscosity
 from dg1d_toolkit.dg1d_core import DGSpace1D
 from dg1d_toolkit.dg1d_integrators import RK4_Step, RKSSP104_Step, RKSSP54_Step
-from dg1d_toolkit.dg1d_subcell import diffusion_rhs, pad_copy_boundary, pad_periodic
+from dg1d_toolkit.dg1d_subcell import (
+    diffusion_rhs,
+    ldg_diffusion_rhs_many,
+    pad_copy_boundary,
+    pad_periodic,
+)
 from dg1d_toolkit.operators import FluxProjection
 from dg1d_toolkit.numericalfluxes import rusanov
 
@@ -284,18 +289,26 @@ def euler_rhs(
             sensor_constant=sensor_constant,
             viscosity_factor=viscosity_factor,
         )
-        rhs = [
-            value
-            + diffusion_rhs(
-                space,
-                pads[j],
-                epst,
-                epsb,
-                method=diffusion,
-                periodic=False,
+        if diffusion.lower() == "ldg":
+            # The artificial-viscosity matrices depend on epst/epsb, not on
+            # the conserved component.  Assemble them once for rho, rhou and
+            # energy instead of rebuilding them three times.
+            diffusive_terms = ldg_diffusion_rhs_many(
+                space, pads, epst, epsb, periodic=False
             )
-            for j, value in enumerate(rhs)
-        ]
+        else:
+            diffusive_terms = [
+                diffusion_rhs(
+                    space,
+                    pads[j],
+                    epst,
+                    epsb,
+                    method=diffusion,
+                    periodic=False,
+                )
+                for j in range(3)
+            ]
+        rhs = [value + diffusive_terms[j] for j, value in enumerate(rhs)]
         return rhs, sensor
     return rhs, None
 

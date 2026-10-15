@@ -6,6 +6,32 @@ as equações, condições iniciais, fluxos, parâmetros de sensor e escolhas de
 estabilização, mas usam `DGSpace1D`, `FluxProjection`, os fluxos numéricos e os
 integradores da toolkit.
 
+## Organização desta pasta
+
+Esta pasta possui uma organização um pouco diferente das demais pastas de
+`examples`. Nos outros exemplos, normalmente cada diretório resolve um único problema e contém praticamente toda a lógica necessária para sua execução.
+
+Aqui, entretanto, estão reunidas várias réplicas dos testes originalmente desenvolvidos pelo Alberto. Cada subpasta representa um problema físico diferente, mas todos os casos utilizam uma infraestrutura comum:
+
+```text
+examples/alberto_replicas/
+├── common.py
+├── run_all_quick.py
+├── allen_cahn/
+│   └── run.py
+├── cahn_hilliard/
+│   └── run.py
+├── shallow_water/
+│   └── run.py
+├── shock_density/
+│   └── run.py
+├── shu_osher/
+│   └── run.py
+├── linear_advection/
+│   └── run.py
+└── traffic_flow/
+    └── run.py
+
 ## Mapa dos casos
 
 | Exemplo | Fonte principal no ZIP do Alberto | Estratégia usada nesta réplica |
@@ -97,36 +123,21 @@ usam os valores efetivos dos scripts do Alberto, e não o modo reduzido
 `--quick`.
 
 ```bash
-python examples/alberto_replicas/allen_cahn/run.py \
-  --print-every 1000 \
-  --history-every 500
+python examples/alberto_replicas/allen_cahn/run.py --print-every 1000 --history-every 500
 
-python examples/alberto_replicas/allen_cahn/run.py \
-  --diffusion br2 \
-  --print-every 1000 \
-  --history-every 500
+python examples/alberto_replicas/allen_cahn/run.py --diffusion br2 --print-every 1000 --history-every 500
 
-python examples/alberto_replicas/cahn_hilliard/run.py \
-  --print-every 5000 \
-  --history-every 1000
-
-python examples/alberto_replicas/shallow_water/run.py \
-  --print-every 500 \
-  --history-every 100
-
-python examples/alberto_replicas/shock_density/run.py \
-  --print-every 2000 \
-  --history-every 500
-
-python examples/alberto_replicas/shu_osher/run.py \
-  --print-every 5000 \
-  --history-every 1000
+python examples/alberto_replicas/cahn_hilliard/run.py --print-every 5000 --history-every 1000
 
 python examples/alberto_replicas/linear_advection/run.py --print-every 50 --history-every 25
 
-python examples/alberto_replicas/traffic_flow/run.py \
-  --print-every 500 \
-  --history-every 100
+python examples/alberto_replicas/shallow_water/run.py --print-every 500 --history-every 100
+
+python examples/alberto_replicas/shock_density/run.py --print-every 2000 --history-every 500
+
+python examples/alberto_replicas/shu_osher/run.py --print-every 5000 --history-every 1000
+
+python examples/alberto_replicas/traffic_flow/run.py --print-every 500 --history-every 100
 
 
 ## Observações de fidelidade
