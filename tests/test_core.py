@@ -25,7 +25,7 @@ def test_barotropic_primitive_recovery_is_admissible():
     m_l, m_g, momentum = BarotropicDriftFlux.conservative_from_j(
         alpha_g=np.asarray([0.2, 0.4]),
         rho_g=np.asarray([0.2, 0.25]),
-        j=np.asarray([0.3, 0.35]),
+        mixture_velocity=np.asarray([0.3, 0.35]),
         rho_l=1.0,
     )
     primitives = BarotropicDriftFlux.primitives(
