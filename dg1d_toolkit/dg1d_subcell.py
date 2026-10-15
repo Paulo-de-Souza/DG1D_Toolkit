@@ -132,12 +132,7 @@ def ldg_diffusion_rhs(space, field, epst, epsb, *, periodic=True):
     if epst.shape != expected_epst or epsb.shape != expected_epsb:
         raise ValueError("epst/epsb têm dimensão incompatível com space.")
 
-    s_first = np.zeros((space.K, space.Nldof, space.Nldof), dtype=float)
-    s_second = np.zeros_like(s_first)
-    for k in range(space.K):
-        s_first[k], s_second[k] = ModifStiffMatrix(
-            space, epst[:, k + 1], epsb[:, k + 1], type_form="Warburton"
-        )
+    s_first, s_second = _ldg_modified_matrices(space, epst, epsb)
 
     interior = field[:, 1:-1]
     second_volume = np.einsum("kij,jk->ik", s_second, interior)
@@ -155,6 +150,66 @@ def ldg_diffusion_rhs(space, field, epst, epsb, *, periodic=True):
     second_q = np.einsum("kij,jk->ik", s_first, q[:, 1:-1])
     diffusive_numerator = -second_q + ldg_diffusive_flux(space, q, epsb)
     return space.InvM[:, None] * space.J[None, :] ** (-1) * diffusive_numerator
+
+
+def _ldg_modified_matrices(space, epst, epsb):
+    """Assemble all variable-coefficient LDG matrices in one NumPy call."""
+    # These are the same Warburton matrices used by ModifStiffMatrix.  The
+    # element loop is avoided because Euler calls this operator many times.
+    sqrt_epst = np.sqrt(np.maximum(epst[:, 1:-1], 0.0)).T
+    weighted_basis = space.wi[None, :] * space.psi.T
+    raw_first = np.einsum(
+        "ki,ji,il->kjl", sqrt_epst, weighted_basis, space.Dpsi,
+        optimize=True,
+    )
+    s_first = raw_first.transpose(0, 2, 1)
+
+    sqrt_left = np.sqrt(np.maximum(epsb[0, 1:-1], 0.0))
+    sqrt_right = np.sqrt(np.maximum(epsb[1, 1:-1], 0.0))
+    boundary = (
+        sqrt_right[:, None, None] * space.Frk[None, :, :]
+        - sqrt_left[:, None, None] * space.Flk[None, :, :]
+    )
+    s_second = boundary.transpose(0, 2, 1) - raw_first
+    return s_first, s_second
+
+
+def ldg_diffusion_rhs_many(space, fields, epst, epsb, *, periodic=True):
+    """Apply one LDG coefficient field to several modal fields.
+
+    The modified stiffness matrices depend only on ``epst``/``epsb``.  This
+    avoids rebuilding them once per conserved Euler component.
+    """
+    epst = np.asarray(epst, dtype=float)
+    epsb = np.asarray(epsb, dtype=float)
+    expected_epst = (space.nip, space.K + 2)
+    expected_epsb = (2, space.K + 2)
+    if epst.shape != expected_epst or epsb.shape != expected_epsb:
+        raise ValueError("epst/epsb têm dimensão incompatível com space.")
+
+    s_first, s_second = _ldg_modified_matrices(space, epst, epsb)
+    results = []
+    for field in fields:
+        field = _prepare_padded(space, field, periodic)
+        interior = field[:, 1:-1]
+        second_volume = np.einsum("kij,jk->ik", s_second, interior)
+
+        q = np.zeros_like(field)
+        q[:, 1:-1] = space.InvM[:, None] * space.J[None, :] ** (-1) * (
+            -second_volume + ldg_flux(space, field, epsb)
+        )
+        if periodic:
+            _periodicize_in_place(space, q)
+        else:
+            q[:, 0] = q[:, 1]
+            q[:, -1] = q[:, -2]
+
+        second_q = np.einsum("kij,jk->ik", s_first, q[:, 1:-1])
+        diffusive_numerator = -second_q + ldg_diffusive_flux(space, q, epsb)
+        results.append(
+            space.InvM[:, None] * space.J[None, :] ** (-1) * diffusive_numerator
+        )
+    return results
 
 
 def _boundary_derivative_vectors(space):
