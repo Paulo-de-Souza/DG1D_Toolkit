@@ -31,6 +31,7 @@ examples/alberto_replicas/
 │   └── run.py
 └── traffic_flow/
     └── run.py
+```
 
 ## Mapa dos casos
 
@@ -65,12 +66,9 @@ Ou todos os smoke tests de uma vez:
 PYTHONPATH=. python examples/alberto_replicas/run_all_quick.py
 ```
 
-Cada execução salva um `.npz` e uma figura `.png` em `results/` dentro do
-respectivo exemplo e imprime faixas dos campos, número de passos e se o estado
-permaneceu finito. A figura recebe o mesmo nome do arquivo numérico; por
-exemplo, `shock_density.npz` vem acompanhado de `shock_density.png`.
-Use `--output caminho.npz` para escolher outro destino ou `--no-plot` para
-desativar as figuras.
+Cada execução salva um `.npz` e uma figura `.png` em `results/` dentro do respectivo exemplo e imprime faixas dos campos, número de passos e se o estado
+permaneceu finito. A figura recebe o mesmo nome do arquivo numérico; por exemplo, `shock_density.npz` vem acompanhado de `shock_density.png`.
+Use `--output caminho.npz` para escolher outro destino ou `--no-plot` para desativar as figuras.
 
 Para acompanhar a execução e salvar mapas espaço-temporais, use, por exemplo:
 
@@ -124,38 +122,23 @@ usam os valores efetivos dos scripts do Alberto, e não o modo reduzido
 
 ```bash
 python examples/alberto_replicas/allen_cahn/run.py --print-every 1000 --history-every 500
-
 python examples/alberto_replicas/allen_cahn/run.py --diffusion br2 --print-every 1000 --history-every 500
-
 python examples/alberto_replicas/cahn_hilliard/run.py --print-every 5000 --history-every 1000
-
 python examples/alberto_replicas/linear_advection/run.py --print-every 50 --history-every 25
-
 python examples/alberto_replicas/shallow_water/run.py --print-every 500 --history-every 100
-
 python examples/alberto_replicas/shock_density/run.py --print-every 2000 --history-every 500
-
 python examples/alberto_replicas/shu_osher/run.py --print-every 5000 --history-every 1000
-
 python examples/alberto_replicas/traffic_flow/run.py --print-every 500 --history-every 100
-
+```
 
 ## Observações de fidelidade
 
-* O mecanismo chamado “sub-cell shock capturing” nos scripts ativos do Alberto
-  é, na prática, um sensor modal que ativa viscosidade artificial DG. É isso que
-  os exemplos reproduzem; o utilitário opcional de médias subcelulares continua
-  disponível na toolkit, mas não substitui a evolução DG.
-* O Cahn–Hilliard original lê `icr_u.npy` e tem uma formulação de energia livre
-  acoplada a dois parâmetros de ordem. Para tornar o exemplo distribuível e
-  reproduzível, esta versão usa uma perturbação determinística e a forma
-  clássica de Cahn–Hilliard dividida, mantendo a montagem LDG e a projeção
+* O mecanismo chamado “sub-cell shock capturing” nos scripts ativos do Alberto é, na prática, um sensor modal que ativa viscosidade artificial DG. É isso que
+  os exemplos reproduzem; o utilitário opcional de médias subcelulares continua disponível na toolkit, mas não substitui a evolução DG.
+* O Cahn–Hilliard original lê `icr_u.npy` e tem uma formulação de energia livre acoplada a dois parâmetros de ordem. Para tornar o exemplo distribuível e
+  reproduzível, esta versão usa uma perturbação determinística e a forma clássica de Cahn–Hilliard dividida, mantendo a montagem LDG e a projeção
   modal. A diferença está explicitamente isolada no arquivo do exemplo.
-* A projeção modal desta réplica usa a orientação correta dos pesos da
-  quadratura (`weights[None, :] * basis.T`). O `SlopeLimiterN` atual ainda
-  pressupõe `nip=N+1`, por isso a réplica de shallow-water usa GL; o código do
-  Alberto usa GLL, mas a física, a IC e o limitador são os mesmos.
-* Os arquivos dependem dos módulos de captura adicionados anteriormente:
-  `dg1d_capture_shock.py`, `dg1d_subcell.py` e os fluxos LDG/BR2 em
-  `numericalfluxes.py`. O pacote de exemplos inclui uma cópia atualizada de
-  `dg1d_subcell.py` que preserva ghosts prescritos em problemas não periódicos.
+* A projeção modal desta réplica usa a orientação correta dos pesos da quadratura (`weights[None, :] * basis.T`). O `SlopeLimiterN` atual ainda
+  pressupõe `nip=N+1`, por isso a réplica de shallow-water usa GL; o código do Alberto usa GLL, mas a física, a IC e o limitador são os mesmos.
+* Os arquivos dependem dos módulos de captura adicionados anteriormente: `dg1d_capture_shock.py`, `dg1d_subcell.py` e os fluxos LDG/BR2 em
+`numericalfluxes.py`. O pacote de exemplos inclui uma cópia atualizada de `dg1d_subcell.py` que preserva ghosts prescritos em problemas não periódicos.
