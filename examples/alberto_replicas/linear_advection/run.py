@@ -42,7 +42,7 @@ def main(argv=None):
     K, N, t_end, dt, steps = apply_runtime_overrides(
         args, K, N, t_end, dt, source_steps
     )
-    speed = 1.0
+    speed = 0.5
     space = DGSpace1D(K, N, 0.0, 4.0, quad_type="GL", P=2 * N, nlP=3 * N)
     initial = project(space, np.where((space.xc >= 1.0) & (space.xc <= 3.0), 1.0, 0.0))
 
@@ -53,7 +53,7 @@ def main(argv=None):
             lambda value: speed + 0.0 * value,
             boundary_values=(0.0, 0.0), artificial=True,
             sensor_constant=0.01, viscosity_factor=0.5,
-            profile="compact", diffusion="ldg",
+            profile="compact", diffusion="br1",
         )
         return [result]
 

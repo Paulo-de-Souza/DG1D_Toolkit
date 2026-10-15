@@ -53,9 +53,26 @@ def main(argv=None):
     gamma = 1.4
     space = DGSpace1D(K, N, 0.0, 1.0, quad_type="GL", P=2 * N, nlP=3 * N)
     x = space.xc
-    rho = np.where(x < 0.125, 3.857143, 1.0 + 0.2 * np.sin(16.0 * np.pi * x))
-    velocity = np.where(x < 0.125, 2.629369, 0.0)
-    pressure = np.where(x < 0.125, 10.333333, 1.0)
+    # Alberto's active ``Shu-Osher-Ref`` case is partially reflective on
+    # both sides.  The right state is part of the initial condition for
+    # x >= 0.875; it is not only a ghost-cell boundary value.  Leaving this
+    # region with the ordinary Shu--Osher state creates a spurious transient
+    # when the right reflective boundary is applied.
+    left_region = x < 0.125
+    right_region = x >= 0.875
+    middle_region = ~(left_region | right_region)
+    rho = np.select(
+        [left_region, middle_region, right_region],
+        [3.857143, 1.0 + 0.2 * np.sin(16.0 * np.pi * x), 3.857143 / 2.0],
+    )
+    velocity = np.select(
+        [left_region, middle_region, right_region],
+        [2.629369, 0.0, -2.629369 / 2.0],
+    )
+    pressure = np.select(
+        [left_region, middle_region, right_region],
+        [10.333333, 1.0, 10.333333 / 2.0],
+    )
     states0 = [project(space, value) for value in conserved(rho, velocity, pressure, gamma)]
     left = conserved(3.857143, 2.629369, 10.333333, gamma)
     # The active Alberto reflective script uses a partially reflected right
@@ -86,7 +103,8 @@ def main(argv=None):
         velocity_f = rhou_f / np.maximum(rho_f, 1.0e-10)
         pressure_f = (gamma - 1.0) * (energy_f - 0.5 * rhou_f**2 / np.maximum(rho_f, 1.0e-10))
         plot_arrays(figure, space.xc.T.reshape(-1), [rho_f, velocity_f, pressure_f],
-                    ["rho", "u", "p"], "Shu-Osher — artificial viscosity",
+                    ["rho", "u", "p"],
+                    "Shu-Osher — artificial viscosity (reflexão parcial)",
                     ylabels=["rho", "u", "p"])
         if history is not None and len(history.times) > 1:
             rho_h, rhou_h, energy_h = history.physical_arrays()
