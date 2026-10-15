@@ -11,16 +11,17 @@ Jacobi/Legendre polynomials together with self-contained numerical examples.
 
 ## Included capabilities
 
-- modal DG space, quadrature, differentiation matrices, lifting operators and
-  nonlinear flux projection;
+- modal DG space, quadrature, differentiation matrices, lifting operators and nonlinear flux projection;
 - Lax--Friedrichs, Rusanov and BR1 numerical fluxes;
 - explicit Euler, RK4 and SSP Runge--Kutta integrators;
 - slope and hierarchical limiters;
-- inviscid/viscous Burgers, the Sod Euler Riemann problem and water-hammer
-  examples;
-- a staged drift-flux sequence: kinematic wave, barotropic three-equation
-  model, inclined pipe with gravity, and characteristic boundary conditions.
-
+- inviscid/viscous Burgers, the Sod Euler Riemann problem and water-hammer examples;
+- a staged drift-flux sequence: kinematic wave, barotropic three-equation model, inclined pipe with gravity, and characteristic boundary conditions.
+- Persson/Warburton and concentration shock sensors;
+- artificial-viscosity shock capturing and subcell diagnostic utilities;
+- LDG, BR1 and BR2 diffusion operators;
+- replicas of seven Prof. Dr. Alberto Nogueira DG tests, including Allen–Cahn, Cahn–Hilliard, Shallow-Water, Shock-Density, Shu–Osher, Linear Advection and Traffic Flow;
+  
 ## Installation
 
 Create an isolated environment, clone the repository, and install the runtime
@@ -50,6 +51,10 @@ the repository root keeps imports and output paths portable.
 | Barotropic drift-flux | periodic three-equation conservative system | `python -m examples.drift_flux_barotropic.run` |
 | Inclined drift-flux | open pipe with gravity source | `python -m examples.drift_flux_inclined.run` |
 | Characteristic drift-flux | open pipe with characteristic inlet/outlet | `python -m examples.drift_flux_characteristic.run` |
+| Alberto replicas | Seven DG test cases with shock capturing and diffusion strategies | `python examples/alberto_replicas/run_all_quick.py` |
+
+The Alberto replicas are documented separately in [`examples/alberto_replicas/README.md`](examples/alberto_replicas/README.md). They preserve the main equations, initial conditions, stabilization parameters and effective time-stepping choices of the original scripts.
+
 
 Every example has a local `README.md` that states the model, conditions,
 parameters and outputs. New outputs are written into
