@@ -52,6 +52,8 @@ the repository root keeps imports and output paths portable.
 | Inclined drift-flux | open pipe with gravity source | `python -m examples.drift_flux_inclined.run` |
 | Characteristic drift-flux | open pipe with characteristic inlet/outlet | `python -m examples.drift_flux_characteristic.run` |
 | Alberto replicas | Seven DG test cases with shock capturing and diffusion strategies | `python examples/alberto_replicas/run_all_quick.py` |
+| Allen–Cahn (standalone) | complete smooth test with LDG/BR2, 2-D map and GIF | `python -m examples.allen_cahn.run --quick` |
+| Traffic Flow (standalone) | Green-Light test with Persson/Warburton + LDG and GIF | `python -m examples.traffic_flow.run --quick` |
 
 The Alberto replicas are documented separately in [`examples/alberto_replicas/README.md`](examples/alberto_replicas/README.md). They preserve the main equations, initial conditions, stabilization parameters and effective time-stepping choices of the original scripts.
 
