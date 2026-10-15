@@ -94,8 +94,15 @@ def main(argv=None):
     rho = 0.08
     space = DGSpace1D(K, N, 0.0, 1.0, quad_type="GL", P=2 * N, nlP=4 * N)
 
-    initial_u_path = _find_initial_file("icr_u.npy", args.initial_u)
-    initial_v_path = _find_initial_file("icr_v.npy", args.initial_v)
+    if args.quick:
+        # O modo rápido usa a condição inicial fallback,
+        # a menos que o usuário informe arquivos explicitamente.
+        initial_u_path = args.initial_u
+        initial_v_path = args.initial_v
+    else:
+        initial_u_path = _find_initial_file("icr_u.npy", args.initial_u)
+        initial_v_path = _find_initial_file("icr_v.npy", args.initial_v)
+        
     u_initial = _load_or_build_initial(
         space, initial_u_path,
         lambda x: 0.55 - np.exp(-3.0) * np.sin(6.0 * np.pi * x),
